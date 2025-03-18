@@ -34,7 +34,7 @@ class TostTest {
     @Test
     void strange() {
         // Запись в очередь
-        String pathName = OS.getTarget() +  "/queue-directory";
+        String pathName = OS.getTarget() + "/queue-directory";
         try (ChronicleQueue queue = ChronicleQueue.single(pathName)) {
             ExcerptAppender appender = queue.createAppender();
             MyEventWriter writer = appender.methodWriter(MyEventWriter.class);
@@ -50,12 +50,13 @@ class TostTest {
 
             while (true) {
                 boolean found = tailer.readDocument(wire -> {
-                    // Извлечение данных из wire
-                    String message = wire.read(() -> "message").text();
-                    int value = wire.read(() -> "value").int32();
+                    wire.read("writeEvent").marshallable(m -> {
+                        String message = m.read("arg0").text();
+                        int value = m.read("arg1").int32();
 
-                    // Обработка сообщения
-                    System.out.println("Read message: " + message + ", value: " + value);
+                        // Обработка сообщения
+                        System.out.println("Read message: " + message + ", value: " + value);
+                    });
                 });
 
                 if (!found) {
