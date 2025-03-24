@@ -14,4 +14,9 @@ public final class JsonUtils {
     public static String objectToJson(@Nullable Object object) {
         return gson.toJson(object);
     }
+
+    public static <T> T jsonToObject(String json, Class<T> clazz) {
+        return gson.fromJson(json, clazz);
+    }
+
 }

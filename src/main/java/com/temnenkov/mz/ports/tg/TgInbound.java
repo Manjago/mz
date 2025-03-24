@@ -2,6 +2,7 @@ package com.temnenkov.mz.ports.tg;
 
 import com.temnenkov.mz.Main;
 import com.temnenkov.mz.ports.tg.dto.GetUpdatesRequest;
+import com.temnenkov.mz.ports.tg.dto.GetUpdatesResponse;
 import com.temnenkov.mz.utils.JsonUtils;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -51,6 +52,10 @@ public class TgInbound {
         final HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
         final String body = httpResponse.body();
         logger.info("Received {} {}", httpResponse.statusCode(), body);
+        if (httpResponse.statusCode() == 200) {
+            final GetUpdatesResponse getUpdatesResponse = JsonUtils.jsonToObject(body, GetUpdatesResponse.class);
+            logger.info("Parsed to {}", getUpdatesResponse);
+        }
     }
 
 }
