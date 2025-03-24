@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         try {
             final Config config = ConfigLoader.loadConfig(args[0]);
-            new TgInbound(config.getToken()).loop();
+            new TgInbound(config.getToken(), config.getProxyHost(), config.getProxyPort()).loop();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             logger.error("Interrupted", e);
